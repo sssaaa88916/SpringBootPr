@@ -7,4 +7,20 @@
         VALUES
         ( #{email}, #{provider}, #{pw}, #{nm} )
     </insert>
+
+    <select id="findByEmail" resultType="UserEntity">
+        SELECT * FROM t_user
+        WHERE email = #{email}
+        AND provider = #{provider}
+    </select>
+
+    <update id="updUser">
+        UPDATE t_user
+        <set>
+            <if test="mainimg != null and mainimg != '' ">
+                mainimg = #{mainimg}
+            </if>
+        </set>
+        WHERE iuser = #{iuser}
+    </update>
 </mapper>

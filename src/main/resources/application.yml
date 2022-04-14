@@ -70,7 +70,7 @@ spring:
 # xml??? DB??? ??
 mybatis:
   mapper-locations: mappers/**/*.xml
-  type-aliases-package: com.koreait.cloneinstagram
+  type-aliases-package: com.example.springbootpr
 
 server:
   port: 8090
