@@ -1,10 +1,7 @@
 package com.example.springbootpr.feed;
 
 import com.example.springbootpr.common.MyFileUtils;
-import com.example.springbootpr.feed.model.FeedDomain;
-import com.example.springbootpr.feed.model.FeedDto;
-import com.example.springbootpr.feed.model.FeedEntity;
-import com.example.springbootpr.feed.model.FeedImgEntity;
+import com.example.springbootpr.feed.model.*;
 import com.example.springbootpr.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,4 +40,24 @@ public class FeedService {
         return mapper.selFeedList(dto);
     }
 
+    /********************************************    fav [start]  *********/
+    public int feedFavProc(FeedFavEntity entity, int type) {
+        entity.setIuser(auth.getLoginUserPk());
+        if(type == 1) {
+            return mapper.insFeedFav(entity);
+        }
+        return mapper.delFeedFav(entity);
+    }
+    /********************************************    fav [end]  *********/
+
+    /********************************************    cmt [start]  *********/
+    public int insFeedCmt(FeedCmtEntity entity) {
+        entity.setIuser(auth.getLoginUserPk());
+        return mapper.insFeedCmt(entity);
+    }
+
+    public List<FeedCmtDomain> selFeedCmtList(FeedCmtEntity entity) {
+        return mapper.selFeedCmtList(entity);
+    }
+    /********************************************    cmt [end]  *********/
 }

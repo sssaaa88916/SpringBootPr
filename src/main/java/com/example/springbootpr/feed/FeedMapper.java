@@ -14,4 +14,11 @@ public interface FeedMapper {
     /********************************************    img   *********/
     int insFeedImg(FeedImgEntity entity);
 
+    /********************************************    fav   *********/
+    int insFeedFav(FeedFavEntity param);
+    int delFeedFav(FeedFavEntity param);
+
+    /********************************************    cmt   *********/
+    int insFeedCmt(FeedCmtEntity param);
+    List<FeedCmtDomain> selFeedCmtList(FeedCmtEntity param);
 }

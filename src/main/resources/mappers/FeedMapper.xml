@@ -24,7 +24,7 @@
         </if>
         FROM t_feed A
         INNER JOIN t_user C
-        ON A.iuser = C.iuser
+          ON A.iuser = C.iuser
         <if test="iuserForMyFeed > 0">
             AND C.iuser = ${iuserForMyFeed}
         </if>
@@ -42,4 +42,66 @@
         ORDER BY A.ifeed DESC
         LIMIT ${startIdx}, ${limit}
     </select>
+
+    <!-- //////////////////////////// img ///////////////////////-->
+    <insert id="insFeedImg">
+        INSERT INTO t_feed_img
+        ( ifeed, img )
+        VALUES
+        ( ${ifeed}, #{img} )
+    </insert>
+
+    <select id="selFeedImgList" resultType="FeedImgEntity">
+        SELECT img FROM t_feed_img
+        WHERE ifeed = ${ifeed}
+    </select>
+
+
+    <!-- //////////////////////////// fav ///////////////////////-->
+    <insert id="insFeedFav">
+        INSERT INTO t_feed_fav
+        ( ifeed, iuser )
+        VALUES
+        ( ${ifeed}, #{iuser} )
+    </insert>
+
+    <delete id="delFeedFav">
+        DELETE FROM t_feed_fav
+        WHERE ifeed = #{ifeed}
+          AND iuser = #{iuser}
+    </delete>
+
+    <!-- //////////////////////////// cmt ///////////////////////-->
+    <select id="selFeedCmt" resultType="FeedCmtDomain">
+        SELECT A.*, COUNT(A.icmt) - 1 AS isMore
+        FROM (
+                 SELECT A.icmt, A.cmt, A.regdt, A.ifeed
+                      , B.iuser, B.nm as writer, B.mainimg as writerimg
+                 FROM t_feed_cmt A
+                          INNER JOIN t_user B
+                                     ON A.iuser = B.iuser
+                 WHERE A.ifeed = ${ifeed}
+                 ORDER BY icmt ASC
+                     LIMIT 2
+             ) A
+        GROUP BY A.ifeed
+    </select>
+
+    <select id="selFeedCmtList" resultType="FeedCmtDomain">
+        SELECT A.icmt, A.cmt, A.regdt
+             , B.iuser, B.nm as writer, B.mainimg as writerimg
+        FROM t_feed_cmt A
+        INNER JOIN t_user B
+          ON A.iuser = B.iuser
+        WHERE A.ifeed = ${ifeed}
+        ORDER BY icmt ASC
+    </select>
+
+    <insert id="insFeedCmt">
+        INSERT INTO t_feed_cmt
+        ( ifeed, iuser, cmt )
+        VALUES
+        ( ${ifeed}, ${iuser}, #{cmt} )
+    </insert>
+
 </mapper>
